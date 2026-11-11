@@ -458,6 +458,8 @@ const password = document.getElementById("regPassword").value;
 await updateProfile(userCredential.user, {
   displayName: fullName
 });
+    document.getElementById("welcomeUser").textContent =
+  "Welcome, " + fullName;
     showMessage("Account created successfully!");
     e.target.reset();
   } catch (error) {
@@ -488,7 +490,7 @@ onAuthStateChanged(auth, (user) => {
 
   if (user) {
     document.getElementById("welcomeUser").textContent =
-      "Welcome, " + user.email;
+      "Welcome, " + (user.displayName || user.email);
   }
 });
 
