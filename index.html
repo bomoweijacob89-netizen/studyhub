@@ -360,6 +360,137 @@ function searchMaterials() {
   showPage('notes');
 }
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDYD5p8xNhQoNDckx4BsOAanYytAcb1xxk",
+  authDomain: "studyhub-13a5e.firebaseapp.com",
+  projectId: "studyhub-13a5e",
+  storageBucket: "studyhub-13a5e.firebasestorage.app",
+  messagingSenderId: "185853486281",
+  appId: "1:185853486281:web:430da3f2f0f493561b5918",
+  measurementId: "G-8R2HTJ4WBZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// Add the Account button
+document.querySelector("nav").insertAdjacentHTML(
+  "beforeend",
+  '<button onclick="showPage(\'account\')">Student Account</button>'
+);
+
+// Add the account page
+document.querySelector(".container").insertAdjacentHTML(
+  "beforeend",
+  `
+  <section id="account" class="page">
+    <div class="item">
+      <h2>🎓 Student Account</h2>
+      <p>Create an account or log in to StudyHub.</p>
+
+      <div id="signedIn" hidden>
+        <h3 id="welcomeUser"></h3>
+        <button class="action" id="logoutBtn">Log Out</button>
+      </div>
+
+      <div id="authForms">
+        <h3 style="margin-top:20px">Create Account</h3>
+        <form id="registerForm">
+          <input id="regEmail" type="email" placeholder="Email address"
+            required style="width:100%;padding:12px;margin:10px 0">
+          <input id="regPassword" type="password"
+            placeholder="Password (at least 6 characters)"
+            minlength="6" required
+            style="width:100%;padding:12px;margin:10px 0">
+          <button class="action" type="submit">Register</button>
+        </form>
+
+        <h3 style="margin-top:25px">Already have an account?</h3>
+        <form id="loginForm">
+          <input id="loginEmail" type="email" placeholder="Email address"
+            required style="width:100%;padding:12px;margin:10px 0">
+          <input id="loginPassword" type="password" placeholder="Password"
+            required style="width:100%;padding:12px;margin:10px 0">
+          <button class="action" type="submit">Log In</button>
+        </form>
+      </div>
+
+      <p id="authMessage" style="margin-top:15px;font-weight:bold"></p>
+    </div>
+  </section>
+  `
+);
+
+const message = document.getElementById("authMessage");
+
+function showMessage(text, error = false) {
+  message.textContent = text;
+  message.style.color = error ? "red" : "green";
+}
+
+// Register a new student
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("regEmail").value;
+  const password = document.getElementById("regPassword").value;
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    showMessage("Account created successfully!");
+    e.target.reset();
+  } catch (error) {
+    showMessage(error.message, true);
+  }
+});
+
+// Log in an existing student
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    showMessage("Login successful!");
+    e.target.reset();
+  } catch (error) {
+    showMessage(error.message, true);
+  }
+});
+
+// Check whether a student is logged in
+onAuthStateChanged(auth, (user) => {
+  document.getElementById("authForms").hidden = !!user;
+  document.getElementById("signedIn").hidden = !user;
+
+  if (user) {
+    document.getElementById("welcomeUser").textContent =
+      "Welcome, " + user.email;
+  }
+});
+
+// Log out
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    showMessage("You have logged out.");
+  } catch (error) {
+    showMessage(error.message, true);
+  }
+});
+</script>
 </body>
 </html>
