@@ -368,7 +368,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged
+onAuthStateChanged,
+updateProfile
 } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -407,6 +408,10 @@ document.querySelector(".container").insertAdjacentHTML(
       <div id="authForms">
         <h3 style="margin-top:20px">Create Account</h3>
         <form id="registerForm">
+        <input id="regName" type="text"
+  placeholder="Your full name"
+  required
+  style="width:100%;padding:12px;margin:10px 0">
           <input id="regEmail" type="email" placeholder="Email address"
             required style="width:100%;padding:12px;margin:10px 0">
           <input id="regPassword" type="password"
@@ -443,11 +448,16 @@ function showMessage(text, error = false) {
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = document.getElementById("regEmail").value;
-  const password = document.getElementById("regPassword").value;
+const fullName = document.getElementById("regName").value;
+const email = document.getElementById("regEmail").value;
+const password = document.getElementById("regPassword").value;
 
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+await updateProfile(userCredential.user, {
+  displayName: fullName
+});
     showMessage("Account created successfully!");
     e.target.reset();
   } catch (error) {
