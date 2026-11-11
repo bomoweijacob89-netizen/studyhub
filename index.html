@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1746a2">
+<title>StudyHub - Student Learning Platform</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f3f6fc;
+  color: #172554;
+}
+
+header {
+  background: #1746a2;
+  color: white;
+  padding: 22px 7%;
+}
+
+header h1 {
+  font-size: 28px;
+}
+
+header p {
+  margin-top: 7px;
+  color: #dbeafe;
+}
+
+nav {
+  background: white;
+  padding: 15px 5%;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 8px #ddd;
+}
+
+nav button {
+  border: none;
+  background: none;
+  color: #1746a2;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.container {
+  padding: 28px 7%;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.welcome {
+  background: linear-gradient(120deg,#1746a2,#3978d8);
+  color: white;
+  padding: 30px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+}
+
+.welcome h2 {
+  margin-bottom: 12px;
+  font-size: 26px;
+}
+
+.search {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #dbe3ef;
+  border-radius: 9px;
+  margin-bottom: 25px;
+  font-size: 15px;
+}
+
+h2.section-title {
+  margin-bottom: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(210px,1fr));
+  gap: 18px;
+}
+
+.card {
+  background: white;
+  padding: 23px;
+  border-radius: 13px;
+  box-shadow: 0 3px 12px #e0e7f1;
+}
+
+.card .emoji {
+  font-size: 32px;
+  margin-bottom: 13px;
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #64748b;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.action {
+  background: #1746a2;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 11px 16px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.action:hover {
+  background: #0d327e;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.item {
+  background: white;
+  padding: 18px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+}
+
+.item h3 {
+  margin-bottom: 8px;
+}
+
+.item p {
+  color: #64748b;
+}
+
+.question {
+  background: white;
+  padding: 22px;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+.question button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 13px;
+  margin-top: 10px;
+  border: 1px solid #dbe3ef;
+  background: #f8fafc;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.question button:hover {
+  background: #dbeafe;
+}
+
+footer {
+  text-align: center;
+  padding: 25px;
+  margin-top: 40px;
+  background: #1746a2;
+  color: white;
+}
+
+@media(max-width:600px) {
+  header, .container {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .welcome h2 {
+    font-size: 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>📚 StudyHub</h1>
+  <p>Read. Practise. Prepare. Pass.</p>
+</header>
+
+<nav>
+  <button onclick="showPage('home')">Home</button>
+  <button onclick="showPage('notes')">Lecture Notes</button>
+  <button onclick="showPage('questions')">Past Questions</button>
+  <button onclick="showPage('quiz')">Practice Quiz</button>
+</nav>
+
+<div class="container">
+
+<section id="home" class="page active">
+
+  <div class="welcome">
+    <h2>Welcome to StudyHub! 👋</h2>
+    <p>Your learning journey starts here. Find study materials and prepare for your examinations.</p>
+  </div>
+
+  <input class="search" id="search"
+    placeholder="🔍 Search for notes and subjects..."
+    oninput="searchMaterials()">
+
+  <h2 class="section-title">Explore StudyHub</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="emoji">📖</div>
+      <h3>Lecture Notes</h3>
+      <p>Read and understand your course materials.</p>
+      <button class="action" onclick="showPage('notes')">Explore Notes</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">📝</div>
+      <h3>Past Questions</h3>
+      <p>Practise previous examination questions.</p>
+      <button class="action" onclick="showPage('questions')">View Questions</button>
+    </div>
+
+    <div class="card">
+      <div class="emoji">🎯</div>
+      <h3>Practice Quiz</h3>
+      <p>Test your knowledge and check your score.</p>
+      <button class="action" onclick="showPage('quiz')">Start Quiz</button>
+    </div>
+
+  </div>
+
+</section>
+
+<section id="notes" class="page">
+  <h2 class="section-title">📖 Lecture Notes</h2>
+
+  <div class="item">
+    <h3>Introduction to Historiography</h3>
+    <p>Learn the meaning, development and importance of historiography.</p>
+    <button class="action" onclick="readNote('Historiography','Historiography is the study of how history is written and interpreted. It examines historical sources, methods, evidence and the different ways historians explain the past.')">Read Note</button>
+  </div>
+
+  <div class="item">
+    <h3>History of Diplomacy</h3>
+    <p>Understand the origins and development of diplomacy.</p>
+    <button class="action" onclick="readNote('History of Diplomacy','Diplomacy is the practice of managing relations between states through negotiation, communication and peaceful settlement of disputes. It developed from ancient diplomatic exchanges to modern international relations.')">Read Note</button>
+  </div>
+
+  <div class="item">
+    <h3>Industrial Revolution</h3>
+    <p>Study the causes, inventions and effects of industrialisation.</p>
+    <button class="action" onclick="readNote('Industrial Revolution','The Industrial Revolution began in Britain around 1760. It involved a major change from hand production to machine-based manufacturing. Important developments included the steam engine, textile machinery and factory system.')">Read Note</button>
+  </div>
+
+  <div id="noteContent" class="item" style="display:none"></div>
+</section>
+
+<section id="questions" class="page">
+  <h2 class="section-title">📝 Past Questions</h2>
+
+  <div class="item">
+    <h3>Question 1</h3>
+    <p>Define historiography and explain its significance.</p>
+  </div>
+
+  <div class="item">
+    <h3>Question 2</h3>
+    <p>Discuss five major causes of the Industrial Revolution.</p>
+  </div>
+
+  <div class="item">
+    <h3>Question 3</h3>
+    <p>Explain the major functions of diplomacy.</p>
+  </div>
+
+  <p style="color:#64748b;margin-top:15px">
+    Sample practice questions. They are not verified past examination papers.
+  </p>
+</section>
+
+<section id="quiz" class="page">
+  <h2 class="section-title">🎯 Practice Quiz</h2>
+  <p>Answer the question below and test your knowledge.</p>
+
+  <div class="question">
+    <h3>What is historiography?</h3>
+
+    <button onclick="answer(false)">A. The study of geography</button>
+    <button onclick="answer(true)">B. The study of how history is written</button>
+    <button onclick="answer(false)">C. The study of economics</button>
+    <button onclick="answer(false)">D. The study of politics</button>
+
+    <p id="result" style="margin-top:18px;font-weight:bold"></p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <h3>📚 StudyHub</h3>
+  <p>Making learning easier for every student.</p>
+  <p style="margin-top:10px;font-size:12px">© 2026 StudyHub. All rights reserved.</p>
+</footer>
+
+<script>
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(section => {
+    section.classList.remove('active');
+  });
+
+  document.getElementById(page).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function readNote(title, content) {
+  const box = document.getElementById('noteContent');
+  box.style.display = 'block';
+  box.innerHTML = '<h3>' + title + '</h3><p style="margin-top:12px;line-height:1.7">' + content + '</p>';
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+function answer(correct) {
+  const result = document.getElementById('result');
+
+  if(correct) {
+    result.textContent = '✅ Correct! Well done.';
+    result.style.color = 'green';
+  } else {
+    result.textContent = '❌ Not quite. Try again!';
+    result.style.color = 'red';
+  }
+}
+
+function searchMaterials() {
+  const search = document.getElementById('search').value.toLowerCase();
+
+  document.querySelectorAll('#notes .item').forEach(item => {
+    if(item.id === 'noteContent') return;
+    item.style.display = item.textContent.toLowerCase().includes(search) ? 'block' : 'none';
+  });
+
+  showPage('notes');
+}
+</script>
+
+</body>
+</html>
